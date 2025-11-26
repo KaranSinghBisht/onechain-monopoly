@@ -26,23 +26,9 @@ function isCompatible(wallet: WalletStandard) {
   return hasConnect && hasSign;
 }
 
-function scoreWalletName(name: string) {
-  const n = name.toLowerCase();
-  if (n.includes("onewallet")) return 100;
-  if (n.includes("sui")) return 50;
-  if (n.includes("brave")) return -100;
-  return 0;
-}
-
 export function listWallets(): WalletStandard[] {
   const all = getWallets().get() as unknown as WalletStandard[];
-  const isOneWallet = (w: WalletStandard) => {
-    const n = (w.name ?? "").toLowerCase();
-    const compact = n.replace(/\s+/g, "");
-    return compact.includes("onewallet");
-  };
-
-  return all.filter(isCompatible).filter(isOneWallet);
+  return all.filter(isCompatible);
 }
 
 export function onWalletsChanged(cb: () => void) {
